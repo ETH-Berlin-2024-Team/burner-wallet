@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
-import { createBurnerWallet, encryptMessage, decryptMessage } from '../utils/wallet';
+import { createBurnerWallet, encryptMessage, decryptMessage, getPublicKeyFromPrivateKey } from '../utils/wallet';
 
 const Home: React.FC = () => {
   const [wallet, setWallet] = useState<ethers.Wallet | null>(null);
@@ -17,7 +17,7 @@ const Home: React.FC = () => {
 
   const handleEncryptMessage = () => {
     if (wallet && message) {
-      const publicKey = wallet.publicKey;
+      const publicKey = getPublicKeyFromPrivateKey(wallet.privateKey); // Get the public key from the private key
       const encrypted = encryptMessage(publicKey, message);
       setEncryptedMessage(encrypted);
     }
@@ -38,7 +38,7 @@ const Home: React.FC = () => {
         <div style={{ marginTop: '20px' }}>
           <h2>Wallet Details</h2>
           <p><strong>Address:</strong> {wallet.address}</p>
-          <p><strong>Public Key:</strong> {wallet.publicKey}</p>
+          <p><strong>Public Key:</strong> {getPublicKeyFromPrivateKey(wallet.privateKey)}</p>
           <p><strong>Private Key:</strong> {wallet.privateKey}</p>
           <div style={{ marginTop: '20px' }}>
             <h2>Encrypt Message</h2>
